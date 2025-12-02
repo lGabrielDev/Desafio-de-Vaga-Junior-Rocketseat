@@ -9,17 +9,20 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Benefic
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioFullDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.BeneficiarioMapper;
+import br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.BeneficiarioValidations;
 import br.com.lgabrieldev.desafio_junior_plano_saude.validations.documentos_validations.DocumentoValidations;
 
 @Service
 public class BeneficiarioService {
      
      //attributes
-     private DocumentoValidations documentoValidations;
+     private DocumentoValidations documentoValidations; // remover
+     private BeneficiarioValidations beneficiarioValidations; //remover e colocar apenas 1 attribute de validacao insano
 
      //constructors
-     public BeneficiarioService(DocumentoValidations documentoValidations){
+     public BeneficiarioService(DocumentoValidations documentoValidations,  BeneficiarioValidations beneficiarioValidations){
           this.documentoValidations = documentoValidations;
+          this.beneficiarioValidations = beneficiarioValidations;
      }
 
 
@@ -29,7 +32,8 @@ public class BeneficiarioService {
      public  BeneficiarioFullDto cadastrarBeneficiario(@RequestBody BeneficiarioCreateDto beneficiarioCreateDto){
 
           // validando os documentos
-          this.documentoValidations.todosOsCamposEstaoCorretos(beneficiarioCreateDto.getDocumentos().get(0));
+          this.documentoValidations.todosOsCamposEstaoCorretos(beneficiarioCreateDto.getDocumentos().get(0)); // FIXXXXXXX. FAZER O LOOP BOLADO
+          this.beneficiarioValidations.todosOsCamposEstaoCorretos(beneficiarioCreateDto);
 
           // validando o beneficiario
 

@@ -1,6 +1,7 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.documentos_validations;
 import org.springframework.stereotype.Component;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.documentos_exceptions.TipoDocumentoNaoEncontradoException;
+import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoDeveTerApenasNumerosException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoNaoPodeSerNullException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoTemMuitosCharactersException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoCreateDto;
@@ -73,11 +74,23 @@ public  class DocumentoValidations implements DocumentoValidationImp{
           return true;
      }
 
+
+     @Override
+     public Boolean numeroDocumentoApenasNumeros(String numeroDocumento) {
+         
+          if(  numeroDocumento.chars().allMatch(c ->  Character.isDigit(c))) {
+               return true;
+          }
+
+          throw new CampoDeveTerApenasNumerosException(" 'numeroDocumento' deve possuir apenas números.");
+     }
+
      @Override
      public Boolean numeroDocumentoTudoCerto(DocumentoCreateDto documentoCreateDto) {
           String numeroDocumento = documentoCreateDto.getNumeroDocumento();
           this.numeroDocumentoNaoPodeSerNull(numeroDocumento);
           this.numeroDocumentoQuantidadeCharacteresEstaCorreto(documentoCreateDto);
+          this.numeroDocumentoApenasNumeros(numeroDocumento);
           return true;
      }
 

@@ -12,6 +12,7 @@ public interface DocumentoValidationImp {
 
      public Boolean numeroDocumentoNaoPodeSerNull(String numeroDocumento);
      public Boolean numeroDocumentoQuantidadeCharacteresEstaCorreto(DocumentoCreateDto documentoCreateDto);
+     public Boolean numeroDocumentoApenasNumeros(String numeroDocumento);
      public Boolean numeroDocumentoTudoCerto(DocumentoCreateDto documentoCreateDto);
 
      public Boolean todosOsCamposEstaoCorretos(DocumentoCreateDto documentoCreateDto);
