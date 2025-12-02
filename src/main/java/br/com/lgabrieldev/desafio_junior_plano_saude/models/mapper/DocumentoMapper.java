@@ -15,7 +15,7 @@ public abstract class DocumentoMapper {
 
           String tipoDocumentoAsString = documentDto.getTipoDocumento();
           documento.setTipoDocumento(converterTipoDocumentoStringParaEnum(tipoDocumentoAsString)); 
-          documento.setNumeroDocumento(documentDto.getDocumento());
+          documento.setNumeroDocumento(documentDto.getNumeroDocumento());
           return documento;
      }
 
@@ -30,7 +30,7 @@ public abstract class DocumentoMapper {
       public  static DocumentoFullDto converterDocumentoParaFullDTO(Documento documento){
           var fullDTO = new DocumentoFullDto();
           fullDTO.setId(documento.getId());
-          fullDTO.setTipoDocumento(documento.getTipoDocumento());
+          fullDTO.setTipoDocumento(documento.getTipoDocumento().getTipo());
           fullDTO.setNumeroDocumento(documento.getNumeroDocumento());
           fullDTO.setDataInclusao(documento.getDataInclusao());
           fullDTO.setDataUltimaAtualizacao(documento.getDataUltimaAtualizacao());
@@ -48,7 +48,8 @@ public abstract class DocumentoMapper {
      //converter documento em String  --> documento Enum
      public static TipoDocumento converterTipoDocumentoStringParaEnum(String tipoDocumentoString){
 
-          switch(tipoDocumentoString){
+
+          switch(tipoDocumentoString.toUpperCase()){
                case "CPF": 
                     return TipoDocumento.CPF;
                case "RG":

@@ -4,7 +4,6 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import br.com.lgabrieldev.desafio_junior_plano_saude.models.enums.TipoDocumento;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -23,7 +22,7 @@ public class DocumentoFullDto {
 
      //attributes
      private Long id;
-     private TipoDocumento tipoDocumento;
+     private String tipoDocumento;
      private String numeroDocumento;
      private LocalDateTime dataInclusao;
      private LocalDateTime dataUltimaAtualizacao;

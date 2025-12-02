@@ -9,5 +9,5 @@ public class DocumentoCreateDto {
      
      //attributes
      private String tipoDocumento;
-     private String documento;
+     private String numeroDocumento;
 }
