@@ -20,20 +20,15 @@ public  class DocumentoValidations implements DocumentoValidationImp{
      @Override
      public  Boolean tipoDocumentoNaoPodeSerNull(List<DocumentoCreateDto> documentos) {
 
-               for(DocumentoCreateDto i : documentos){
-                    try{
-                         if(i.getTipoDocumento() == null || i.getTipoDocumento().isBlank()){ //se o usuario nao informar  o 'tipoDocumento', o method getTipoDocumento() retorna null e dá problema... Por isso o try catch
-                              throw new CampoNaoPodeSerNullException("O campo 'tipoDocumento' não pode ser null.");
-                         }  
-                    }
-                    catch(Exception e){
-                         throw new CampoNaoPodeSerNullException("O campo 'tipoDocumento' não pode ser null.");
-                    }
-                    
+               Boolean tipoDocumentoErrado =  documentos.stream().anyMatch( i -> i.getTipoDocumento() == null || i.getTipoDocumento().isBlank());
+               
+               if(tipoDocumentoErrado){
+                    throw new CampoNaoPodeSerNullException("O campo 'tipoDocumento' não pode ser null.");
                }
                return true;
      }
 
+     // CONTINUAR AQUI --->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
      @Override
      public  Boolean tipoDocumentoExiste(List<DocumentoCreateDto> documentos) {
           
