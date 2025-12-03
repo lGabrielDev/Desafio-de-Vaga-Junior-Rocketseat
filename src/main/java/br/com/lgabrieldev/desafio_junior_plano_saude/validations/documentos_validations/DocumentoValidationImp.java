@@ -1,20 +1,24 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.documentos_validations;
 
+import java.util.List;
+
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoCreateDto;
 
 public interface DocumentoValidationImp {
      
 
-     public Boolean tipoDocumentoNaoPodeSerNull(String tipoDocumento);
-     public Boolean tipoDocumentoExiste(String tipoDocumento);
-     public Boolean tipoDocumentoTudoCerto(String tipoDocumento);
+     public Boolean tipoDocumentoNaoPodeSerNull(List<DocumentoCreateDto> documentos);
+     public Boolean tipoDocumentoExiste(List<DocumentoCreateDto> documentos);
+      public Boolean umTipoParaCadaDocumento(List<DocumentoCreateDto> documentos);
+     public Boolean tipoDocumentoTudoCerto(List<DocumentoCreateDto> documentos);
    
 
-     public Boolean numeroDocumentoNaoPodeSerNull(String numeroDocumento);
-     public Boolean numeroDocumentoQuantidadeCharacteresEstaCorreto(DocumentoCreateDto documentoCreateDto);
-     public Boolean numeroDocumentoApenasNumeros(String numeroDocumento);
-     public Boolean numeroDocumentoTudoCerto(DocumentoCreateDto documentoCreateDto);
+     public Boolean numeroDocumentoNaoPodeSerNull(List<DocumentoCreateDto> documentos);
+     public Boolean numeroDocumentoQuantidadeCharacteresEstaCorreto(List<DocumentoCreateDto> documentos);
+     public Boolean numeroDocumentoApenasNumeros(List<DocumentoCreateDto> documentos);
+     public Boolean numeroDocumentoTudoCerto(List<DocumentoCreateDto> documentos);
 
-     public Boolean todosOsCamposEstaoCorretos(DocumentoCreateDto documentoCreateDto);
+     public Boolean todosOsCamposEstaoCorretos(BeneficiarioCreateDto beneficiarioCreateDto);
      
 }

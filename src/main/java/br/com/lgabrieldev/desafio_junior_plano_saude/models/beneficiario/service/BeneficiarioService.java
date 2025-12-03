@@ -1,41 +1,31 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.service;
 
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Beneficiario;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioFullDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.BeneficiarioMapper;
-import br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.BeneficiarioValidations;
-import br.com.lgabrieldev.desafio_junior_plano_saude.validations.documentos_validations.DocumentoValidations;
+import br.com.lgabrieldev.desafio_junior_plano_saude.validations.AllValidations;
 
 @Service
 public class BeneficiarioService {
      
      //attributes
-     private DocumentoValidations documentoValidations; // remover
-     private BeneficiarioValidations beneficiarioValidations; //remover e colocar apenas 1 attribute de validacao insano
+     @Autowired
+     private AllValidations allValidations;
 
      //constructors
-     public BeneficiarioService(DocumentoValidations documentoValidations,  BeneficiarioValidations beneficiarioValidations){
-          this.documentoValidations = documentoValidations;
-          this.beneficiarioValidations = beneficiarioValidations;
+     public BeneficiarioService(AllValidations allValidations){
+          this.allValidations = allValidations;
      }
 
 
 
      // ******************************************** Criar Beneficiário ********************************************
-     @PostMapping("")
-     public  BeneficiarioFullDto cadastrarBeneficiario(@RequestBody BeneficiarioCreateDto beneficiarioCreateDto){
+     public  BeneficiarioFullDto cadastrarBeneficiario(BeneficiarioCreateDto beneficiarioCreateDto){
 
-          // validando os documentos
-          this.documentoValidations.todosOsCamposEstaoCorretos(beneficiarioCreateDto.getDocumentos().get(0)); // FIXXXXXXX. FAZER O LOOP BOLADO
-          this.beneficiarioValidations.todosOsCamposEstaoCorretos(beneficiarioCreateDto);
-
-          // validando o beneficiario
+          this.allValidations.validarAttributes(beneficiarioCreateDto);
 
 
 
