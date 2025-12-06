@@ -1,6 +1,9 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.documentos_validations;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.BeneficiarioApenasPodeTer1DocumentoPorTipoException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.documentos_exceptions.TipoDocumentoNaoEncontradoException;
@@ -9,12 +12,12 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptio
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoTemMuitosCharactersException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoCreateDto;
-import br.com.lgabrieldev.desafio_junior_plano_saude.models.enums.TipoDocumento;
-
 
 @Component
 public  class DocumentoValidations implements DocumentoValidationImp{
 
+     //attributes
+     private final static Set<String> TIPOS_DOCUMENTOS_VALIDOS = Set.of("RG", "CPF", "CNH");
 
      // ****************** validacoes do campo 'tipoDocumento' ****************** 
      @Override
@@ -28,52 +31,43 @@ public  class DocumentoValidations implements DocumentoValidationImp{
                return true;
      }
 
-     // CONTINUAR AQUI --->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
      @Override
-     public  Boolean tipoDocumentoExiste(List<DocumentoCreateDto> documentos) {
-          
-          for(DocumentoCreateDto i : documentos){ 
-               try{
-                    switch (i.getTipoDocumento().toUpperCase()) { //se o usuario nao informar  o 'tipoDocumento', o method getTipoDocumento() retorna null e dá problema... Por isso o try catch
-                         case "RG":
-                         case "CPF":
-                         case "CNH":
-                              break;
-                              //
-                         default:
-                              throw new TipoDocumentoNaoEncontradoException(" 'tipoDocumento' não encontrado!  Os tipos disponíveis são:\n'RG', 'CPF' e 'CNH' ");
-                    }
-               }
-               catch(Exception e){
+     public  Boolean tipoDocumentoExiste(List<DocumentoCreateDto> documentos) {    
+
+          Boolean tipoInvalidoEncontrado = documentos.stream().anyMatch((document) -> {
+               String tipoDocumento = document.getTipoDocumento();
+
+               return !(TIPOS_DOCUMENTOS_VALIDOS.contains(tipoDocumento.toUpperCase()));
+          });
+
+               if(tipoInvalidoEncontrado){
                     throw new TipoDocumentoNaoEncontradoException(" 'tipoDocumento' não encontrado!  Os tipos disponíveis são:\n'RG', 'CPF' e 'CNH' ");
                }
-          }
-          return true;
-     } 
+               return true;
+     }
 
-      @Override
+     @Override
      public Boolean umTipoParaCadaDocumento(List<DocumentoCreateDto> documentos) {
-          
-          Integer quantosDocumentosCPF = 0;
-          Integer quantosDocumentosRG = 0;
-          Integer quantosDocumentosCNH = 0;
 
-          for(DocumentoCreateDto i : documentos ){
-               if(i.getTipoDocumento().toUpperCase().equals(TipoDocumento.CPF.getTipo())){
-                    quantosDocumentosCPF +=1;
-               }
-               else if(i.getTipoDocumento().toUpperCase().equals(TipoDocumento.RG.getTipo())){
-                    quantosDocumentosRG +=1;
-               }
-               else if(i.getTipoDocumento().toUpperCase().equals(TipoDocumento.CNH.getTipo())){
-                     quantosDocumentosCNH +=1;
-               }
-          }
+         Map<String, Long>  tipoDocumentoAgrupado = documentos.stream()
+               .collect(Collectors.groupingBy(
 
-          if(quantosDocumentosCPF > 1 ||  quantosDocumentosRG > 1 || quantosDocumentosCNH > 1){
-               throw new BeneficiarioApenasPodeTer1DocumentoPorTipoException("Nao eh possível ter mais de 1 CPF\nNão eh possivel ter mais de 1 RG\nNao eh possível ter mais de 1 CNH");
-          }
+                    //lembrando, que aqui o tipo de documento já está correto porque verificamos no method acima ^^
+                    document -> document.getTipoDocumento().toUpperCase(), //  1º parametro --> como quero agrupar
+                    Collectors.counting() //  2º parametro --> a informacao que quero informar. Se fosse campo de valor, poderia somar, etc...
+               ));
 
+             tipoDocumentoAgrupado.forEach((chave, valor) -> {
+                    System.out.println(String.format("%s --> %d", chave, valor));
+             });
+
+
+          Boolean temDocumentoDuplicado = tipoDocumentoAgrupado.values().stream()
+               .anyMatch((valor) ->  valor >= 2);
+
+               if(temDocumentoDuplicado){
+                    throw new BeneficiarioApenasPodeTer1DocumentoPorTipoException("Nao eh possível ter mais de 1 CPF\nNão eh possivel ter mais de 1 RG\nNao eh possível ter mais de 1 CNH");
+               };
           return true;
      }
 
@@ -86,9 +80,12 @@ public  class DocumentoValidations implements DocumentoValidationImp{
           return true;
      }
 
-     
-
      // ****************** validacoes do campo 'numeroDocumento' ******************
+
+
+
+
+     // CONTINUAR AQUI -->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
      @Override
      public Boolean numeroDocumentoNaoPodeSerNull(List<DocumentoCreateDto> documentos) {
            for(DocumentoCreateDto i : documentos){
@@ -98,15 +95,6 @@ public  class DocumentoValidations implements DocumentoValidationImp{
            }
           return true;
      }
-
-    
-     
-     
-     
-     
-     
-
-
 
 
      @Override
