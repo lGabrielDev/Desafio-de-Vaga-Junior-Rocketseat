@@ -1,8 +1,11 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.service;
+import java.util.List;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Beneficiario;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioFullDto;
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioWithoutDocumentos;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.repository.BeneficiarioRepository;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.BeneficiarioMapper;
 import br.com.lgabrieldev.desafio_junior_plano_saude.validations.AllValidations;
@@ -28,13 +31,20 @@ public class BeneficiarioService {
           //validar campos
           this.allValidations.validarAttributes(beneficiarioCreateDto);
 
-          //salvar no banco -->>>>>>>>>>>>>>> ALTERAR DEPOIS. CRIAR UMA CLASSE POR FORA PRA FICAR MAIS ORGANIZADO
+          //bilateralidade
           Beneficiario beneficiario = BeneficiarioMapper.converterDTOParaBeneficiario(beneficiarioCreateDto);
-          //salvamos primeiro a class independente
-          this.beneficiarioRepository.save(beneficiario); //nao precisa salvar o lado do 'Documento' porque o Cascade All está ativado
-
+          //salvar no banco
+          this.beneficiarioRepository.save(beneficiario); //nao precisa salvar o lado do 'Documento' porque o Cascade All está ativado. 
           BeneficiarioFullDto beneficiarioFullDto = BeneficiarioMapper.converterBeneficiarioParaFullDTO(beneficiario);
           return beneficiarioFullDto;
  
+     }
+
+
+     // *************************************************** Listar todos  ***************************************************
+     public  List<BeneficiarioWithoutDocumentos> listarTodos(){
+          return this.beneficiarioRepository.findAll().stream()
+               .map(beneficiario -> BeneficiarioMapper.converterBeneficiarioParaBeneficiarioWithoutDocumentos(beneficiario))
+               .collect(Collectors.toList());
      }
 }

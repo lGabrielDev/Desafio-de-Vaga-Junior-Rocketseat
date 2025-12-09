@@ -2,6 +2,7 @@ package br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.Documento;
 import jakarta.persistence.CascadeType;
@@ -14,13 +15,11 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Getter
 @Setter
-@NoArgsConstructor
 @Entity
 @Table(name = "beneficiario")
 public class Beneficiario {
@@ -46,4 +45,9 @@ public class Beneficiario {
 
      @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL)
      List<Documento> documentos;
+
+     //constructors
+     public Beneficiario(){
+          this.documentos = new ArrayList<>(); //sempre inicializar sua lista, senao dá BO
+     }
 }
