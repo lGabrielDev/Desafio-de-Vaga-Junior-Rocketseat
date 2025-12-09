@@ -10,7 +10,7 @@ public enum TipoDocumento {
      CNH("CNH",11);
 
      //attributes
-     private  String tipo;
+     private String tipo;
      private Integer maxCaracteres;
 
 

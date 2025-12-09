@@ -12,7 +12,7 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.repository
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.BeneficiarioMapper;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.DocumentoMapper;
 import br.com.lgabrieldev.desafio_junior_plano_saude.validations.AllValidations;
-import br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.beneficiarioExiste.BeneficiarioExisteValidation;
+import br.com.lgabrieldev.desafio_junior_plano_saude.validations.ValidationsDeAtualizacao;
 
 @Service
 public class BeneficiarioService {
@@ -21,18 +21,20 @@ public class BeneficiarioService {
      private AllValidations allValidations;
      private BeneficiarioRepository beneficiarioRepository;
      private DocumentoRepository documentoRepository;
+     private ValidationsDeAtualizacao validationsDeAtualizacao;
 
      //constructors
-     public BeneficiarioService(AllValidations allValidations,  BeneficiarioRepository beneficiarioRepository, DocumentoRepository documentoRepository){
+     public BeneficiarioService(AllValidations allValidations,  BeneficiarioRepository beneficiarioRepository, DocumentoRepository documentoRepository, ValidationsDeAtualizacao validationsDeAtualizacao){
           this.allValidations = allValidations;
           this.beneficiarioRepository = beneficiarioRepository;   
           this.documentoRepository = documentoRepository;
+          this.validationsDeAtualizacao = validationsDeAtualizacao;
      }
 
 
 
-     // ******************************************** Criar Beneficiário ********************************************
-     public  BeneficiarioFullDto cadastrarBeneficiario(BeneficiarioCreateDto beneficiarioCreateDto){
+     // ******************************************** CRIAR Beneficiário ********************************************
+     public BeneficiarioFullDto cadastrarBeneficiario(BeneficiarioCreateDto beneficiarioCreateDto){
 
           //validar campos
           this.allValidations.validarAttributes(beneficiarioCreateDto);
@@ -47,7 +49,7 @@ public class BeneficiarioService {
      }
 
 
-     // *************************************************** Listar todos  ***************************************************
+     // *************************************************** LISTAR todos  ***************************************************
      public  List<BeneficiarioWithoutDocumentos> listarTodos(){
           return this.beneficiarioRepository.findAll().stream()
                .map(beneficiario -> BeneficiarioMapper.converterBeneficiarioParaBeneficiarioWithoutDocumentos(beneficiario))
@@ -55,12 +57,30 @@ public class BeneficiarioService {
      }
 
 
-     // *************************************************** Listar todos os documentos de um beneficiario  ***************************************************
+     // *************************************************** LISTAR todos os documentos de um beneficiario  ***************************************************
      public  List<DocumentoFullDto> listarTodosDocumentos(Long beneficiarioId){
           this.allValidations.beneficiarioExiste(beneficiarioId);
 
            return this.documentoRepository.findDocumentoByBeneficiarioId(beneficiarioId).stream()
                .map(documento -> DocumentoMapper.converterDocumentoParaFullDTO(documento))
                .collect(Collectors.toList());
+     }
+
+
+     // ******************************************** ALTERAR dados de um Beneficiário ********************************************
+     public BeneficiarioFullDto atualizarBeneficiario(Long beneficiarioId, BeneficiarioCreateDto dto){
+
+          this.allValidations.beneficiarioExiste(beneficiarioId);
+          Beneficiario beneficiario =  this.beneficiarioRepository.findById(beneficiarioId).get();
+
+          this.validationsDeAtualizacao.todosOsCamposEstaoCorretos(beneficiario, dto);
+          
+
+          
+          //salvar no banco
+          this.beneficiarioRepository.save(beneficiario); //nao precisa salvar o lado do 'Documento' porque o Cascade All está ativado. 
+          BeneficiarioFullDto beneficiarioFullDto = BeneficiarioMapper.converterBeneficiarioParaFullDTO(beneficiario);
+          return beneficiarioFullDto;
+
      }
 }

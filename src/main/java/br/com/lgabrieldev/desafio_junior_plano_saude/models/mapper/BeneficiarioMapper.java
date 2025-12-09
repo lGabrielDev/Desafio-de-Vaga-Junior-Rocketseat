@@ -20,7 +20,6 @@ public abstract class BeneficiarioMapper {
           return beneficiario;
      }
 
-
       public  static BeneficiarioFullDto converterBeneficiarioParaFullDTO(Beneficiario beneficiario){
           BeneficiarioFullDto beneficiarioFullDto = new BeneficiarioFullDto();
                beneficiarioFullDto.setId(beneficiario.getId());
@@ -39,8 +38,15 @@ public abstract class BeneficiarioMapper {
                beneficiarioWithoutDocumentos.setDataNascimento(beneficiario.getDataNascimento());
                beneficiarioWithoutDocumentos.setQuantidadeDocumentos(beneficiario.getDocumentos().size());
           return beneficiarioWithoutDocumentos;
-         
      }
 
+     //ATUALIZAR dados beneficiario
+     // public  static BeneficiarioWithoutDocumentos atualizarDados(Beneficiario beneficiario, BeneficiarioCreateDto dto){
+     //      if(dto.getNome() == null){
+
+     //      }
+
+     //      return null;
+     // }
 
 }
