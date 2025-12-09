@@ -7,8 +7,12 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.Be
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioFullDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioWithoutDocumentos;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.repository.BeneficiarioRepository;
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoFullDto;
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.repository.DocumentoRepository;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.BeneficiarioMapper;
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.DocumentoMapper;
 import br.com.lgabrieldev.desafio_junior_plano_saude.validations.AllValidations;
+import br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.beneficiarioExiste.BeneficiarioExisteValidation;
 
 @Service
 public class BeneficiarioService {
@@ -16,11 +20,13 @@ public class BeneficiarioService {
      //attributes
      private AllValidations allValidations;
      private BeneficiarioRepository beneficiarioRepository;
+     private DocumentoRepository documentoRepository;
 
      //constructors
-     public BeneficiarioService(AllValidations allValidations,  BeneficiarioRepository beneficiarioRepository){
+     public BeneficiarioService(AllValidations allValidations,  BeneficiarioRepository beneficiarioRepository, DocumentoRepository documentoRepository){
           this.allValidations = allValidations;
-          this.beneficiarioRepository = beneficiarioRepository;
+          this.beneficiarioRepository = beneficiarioRepository;   
+          this.documentoRepository = documentoRepository;
      }
 
 
@@ -45,6 +51,16 @@ public class BeneficiarioService {
      public  List<BeneficiarioWithoutDocumentos> listarTodos(){
           return this.beneficiarioRepository.findAll().stream()
                .map(beneficiario -> BeneficiarioMapper.converterBeneficiarioParaBeneficiarioWithoutDocumentos(beneficiario))
+               .collect(Collectors.toList());
+     }
+
+
+     // *************************************************** Listar todos os documentos de um beneficiario  ***************************************************
+     public  List<DocumentoFullDto> listarTodosDocumentos(Long beneficiarioId){
+          this.allValidations.beneficiarioExiste(beneficiarioId);
+
+           return this.documentoRepository.findDocumentoByBeneficiarioId(beneficiarioId).stream()
+               .map(documento -> DocumentoMapper.converterDocumentoParaFullDTO(documento))
                .collect(Collectors.toList());
      }
 }

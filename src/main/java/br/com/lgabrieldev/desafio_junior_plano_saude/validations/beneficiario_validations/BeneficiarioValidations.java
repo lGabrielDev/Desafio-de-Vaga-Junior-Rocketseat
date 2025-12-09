@@ -24,7 +24,7 @@ public class BeneficiarioValidations implements BeneficiarioValidationsImp {
                DataNascimentoValidations dataNascimentoValidations,
                BeneficiarioQuantidadeDocumentosValidations beneficiarioQuantidadeDocumentosValidations
           )
-          {
+     {
           this.nameValidations = nameValidations;
           this.telefoneValidations = telefoneValidations;
           this.dataNascimentoValidations = dataNascimentoValidations;

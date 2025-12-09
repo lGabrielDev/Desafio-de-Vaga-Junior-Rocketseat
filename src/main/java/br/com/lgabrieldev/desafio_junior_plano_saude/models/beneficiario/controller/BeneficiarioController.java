@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,6 +15,7 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.Be
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioFullDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioWithoutDocumentos;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.service.BeneficiarioService;
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoFullDto;
 
 
 @RestController
@@ -44,10 +46,17 @@ public class BeneficiarioController {
      // *************************************************** Listar todos  ***************************************************
      @GetMapping("")
      public  ResponseEntity<List<BeneficiarioWithoutDocumentos>> listarTodos(){
-
           return ResponseEntity
                .status(HttpStatus.OK)
                .body(this.beneficiarioService.listarTodos());
+     }
+
+     // *************************************************** Listar todos os documentos de um beneficiario  ***************************************************
+     @GetMapping("{id}/documentos")
+     public  ResponseEntity<List<DocumentoFullDto>> listarTodosDocumentos( @PathVariable(name = "id")  Long beneficiarioId){
+          return ResponseEntity
+               .status(HttpStatus.OK)
+               .body(this.beneficiarioService.listarTodosDocumentos(beneficiarioId));
  
      }
 

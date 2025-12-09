@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.BeneficiarioApenasPodeTer1DocumentoPorTipoException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.BeneficiarioDeveSerMaiorDeIdadeException;
+import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.BeneficiarioNaoExisteException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.FormatacaoDeDataIncorretaException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.NaoFoiEnviadoNenhumDocumentoParaCadastroException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.documentos_exceptions.DocumentoJaExisteNoBancoException;
@@ -30,7 +31,8 @@ public class GlobalExceptionHandler {
           TipoDocumentoNaoEncontradoException.class,
           CampoDeveTerApenasNumerosException.class,
           CampoNaoPodeSerNullException.class,
-          CampoTemMuitosCharactersException.class
+          CampoTemMuitosCharactersException.class,
+          BeneficiarioNaoExisteException.class
      })
      public ResponseEntity<ErroPadrao> generalExceptionHandler (RuntimeException e){
           ErroPadrao e1 = new ErroPadrao(e);

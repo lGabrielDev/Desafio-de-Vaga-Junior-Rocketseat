@@ -45,6 +45,5 @@ public class Documento {
      @ManyToOne(targetEntity = Beneficiario.class)
      @JoinColumn(name = "beneficiario_id")
      private Beneficiario beneficiario;
-
 }
 
