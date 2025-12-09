@@ -2,7 +2,9 @@ package br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_excepti
 
 public class CampoDeveTerApenasNumerosException extends RuntimeException{
      
-     public CampoDeveTerApenasNumerosException(String errorMessage){
-          super(errorMessage);
+     //constructors
+     public CampoDeveTerApenasNumerosException(String errorField){
+          super(String.format(" '%s' deve possuir apenas números.", errorField));
      }
 }
+

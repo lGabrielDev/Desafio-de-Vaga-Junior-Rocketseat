@@ -9,7 +9,7 @@ public class NomeValidations implements NomeValidationsImp{
      @Override
      public Boolean nomeNaoPodeSerNull(String nome) {
            if(nome == null || nome.isBlank()){
-               throw new CampoNaoPodeSerNullException("O campo 'nome' não pode ser null.");
+               throw new CampoNaoPodeSerNullException("'nome'");
           }
           return true;
      }

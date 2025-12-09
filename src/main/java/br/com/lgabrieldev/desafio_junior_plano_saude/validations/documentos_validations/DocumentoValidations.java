@@ -33,7 +33,7 @@ public class DocumentoValidations implements DocumentoValidationImp{
 
                Boolean tipoDocumentoErrado =  documentos.stream().anyMatch( i -> i.getTipoDocumento() == null || i.getTipoDocumento().isBlank());
                if(tipoDocumentoErrado){
-                    throw new CampoNaoPodeSerNullException("O campo 'tipoDocumento' não pode ser null.");
+                    throw new CampoNaoPodeSerNullException("'tipoDocumento'");
                }
                return true;
      }
@@ -46,7 +46,7 @@ public class DocumentoValidations implements DocumentoValidationImp{
                return !(TIPOS_DOCUMENTOS_VALIDOS.contains(tipoDocumento.toUpperCase()));
           });
           if(tipoInvalidoEncontrado){
-               throw new TipoDocumentoNaoEncontradoException(" 'tipoDocumento' não encontrado!  Os tipos disponíveis são:\n'RG', 'CPF' e 'CNH' ");
+               throw new TipoDocumentoNaoEncontradoException();
           }
           return true;
      }
@@ -68,7 +68,7 @@ public class DocumentoValidations implements DocumentoValidationImp{
           Boolean temDocumentoDuplicado = tipoDocumentoAgrupado.values().stream()
                .anyMatch((valor) ->  valor >= 2);
                if(temDocumentoDuplicado){
-                    throw new BeneficiarioApenasPodeTer1DocumentoPorTipoException("Nao eh possível ter mais de 1 CPF\nNão eh possivel ter mais de 1 RG\nNao eh possível ter mais de 1 CNH");
+                    throw new BeneficiarioApenasPodeTer1DocumentoPorTipoException();
                };
           return true;
      }
@@ -87,7 +87,7 @@ public class DocumentoValidations implements DocumentoValidationImp{
 
           Boolean numeroDocumentoErrado =  documentos.stream().anyMatch( i -> i.getNumeroDocumento() == null || i.getNumeroDocumento().isBlank());
           if(numeroDocumentoErrado){
-               throw new CampoNaoPodeSerNullException("O campo 'numeroDocumento' não pode ser null.");
+               throw new CampoNaoPodeSerNullException("'numeroDocumento'");
           }
           return true;
      }
@@ -129,7 +129,7 @@ public class DocumentoValidations implements DocumentoValidationImp{
           documentos.stream().anyMatch(documento -> {
                String numeroDocumento = documento.getNumeroDocumento();
                if(  !(numeroDocumento.chars().allMatch(c ->  Character.isDigit(c))) ) {
-                    throw new CampoDeveTerApenasNumerosException(" 'numeroDocumento' deve possuir apenas números.");
+                    throw new CampoDeveTerApenasNumerosException(String.format("numeroDocumento %s", documento.getTipoDocumento()));
                }
                return false;  // no anyMatch, ou qualquer outro method de filtro, o loop só vai parar se ele retornar true. Enquanto retornar false, o proximo loop acontece.
           });
@@ -145,7 +145,7 @@ public class DocumentoValidations implements DocumentoValidationImp{
                .count();
                
                if(numeroDocumentosUnicos != documentos.size()){
-                    throw new DocumentosIguaisException("Os documentos informados possuem o mesmo número. Cada documento deve ser único.");
+                    throw new DocumentosIguaisException();
                }
           return true;
      }
@@ -158,7 +158,7 @@ public class DocumentoValidations implements DocumentoValidationImp{
 
                this.documentoRepository.findDocumentoByNumeroDocumento(numeroDocumento)
                     .ifPresent(documentoEncontrado ->  { //precisa ter {} pra funcionar. No method 'ifPresent()' ele precisa usar 'bloco de código'
-                         throw new DocumentoJaExisteNoBancoException(String.format(" o numero do documento '%s' já existe no banco",  tipoDocumento));
+                         throw new DocumentoJaExisteNoBancoException(tipoDocumento);
                     });
 
                return false;

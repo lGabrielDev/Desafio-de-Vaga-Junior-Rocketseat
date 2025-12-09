@@ -14,7 +14,7 @@ public class BeneficiarioQuantidadeDocumentosValidations  implements Beneficiari
                beneficiarioCreateDto.getDocumentos().size();
           }
           catch(Exception e){
-               throw new NaoFoiEnviadoNenhumDocumentoParaCadastroException("Para cadastrar um beneficiário é necessário informar pelo menos 1 documento --> 'CPF', 'RG' ou 'CNH' ");
+               throw new NaoFoiEnviadoNenhumDocumentoParaCadastroException();
           }
           return true;
      }

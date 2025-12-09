@@ -2,7 +2,8 @@ package br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.documentos_exce
 
 public class TipoDocumentoNaoEncontradoException extends RuntimeException{
      
-     public TipoDocumentoNaoEncontradoException(String errorMessage){
-          super(errorMessage);
+     //constructors
+     public TipoDocumentoNaoEncontradoException(){
+          super(" 'tipoDocumento' não encontrado!  Os tipos disponíveis são:\n'RG', 'CPF' e 'CNH' ");
      }
 }

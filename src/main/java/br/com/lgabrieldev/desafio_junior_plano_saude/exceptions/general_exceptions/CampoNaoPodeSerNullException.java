@@ -2,7 +2,8 @@ package br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_excepti
 
 public class CampoNaoPodeSerNullException extends RuntimeException{
      
-     public CampoNaoPodeSerNullException(String errorMessage){
-          super(errorMessage);
+     //constructors
+     public CampoNaoPodeSerNullException(String errorField){
+          super(String.format("O campo '%s' não pode ser null.", errorField));
      }
 }

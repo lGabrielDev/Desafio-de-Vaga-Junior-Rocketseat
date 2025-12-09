@@ -13,7 +13,7 @@ public class TelefoneValidations implements TelefoneValidationsImp  {
      @Override
      public Boolean telefoneNaoPodeSerNull(String telefone) {
            if(telefone == null || telefone.isBlank()){
-               throw new CampoNaoPodeSerNullException("O campo 'telefone' não pode ser null.");
+               throw new CampoNaoPodeSerNullException("telefone");
           }
           return true;
      }
@@ -28,12 +28,10 @@ public class TelefoneValidations implements TelefoneValidationsImp  {
 
      @Override
      public Boolean telefoneApenasNumeros(String telefone) {
-         
           if(  telefone.chars().allMatch(c ->  Character.isDigit(c))) {
                return true;
           }
-
-          throw new CampoDeveTerApenasNumerosException(" 'telefone' deve possuir apenas números.");
+          throw new CampoDeveTerApenasNumerosException("telefone");
      }
      
      @Override

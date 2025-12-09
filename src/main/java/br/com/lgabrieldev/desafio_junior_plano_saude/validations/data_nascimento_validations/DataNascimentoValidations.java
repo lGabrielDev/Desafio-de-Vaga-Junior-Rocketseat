@@ -12,7 +12,7 @@ public class DataNascimentoValidations  implements DataNascimentoValidationsImp 
      @Override
      public Boolean dataNascimentoNaoPodeSerNull(LocalDate data) {
            if(data == null ){
-               throw new CampoNaoPodeSerNullException("O campo 'dataNascimento' não pode ser null.");
+               throw new CampoNaoPodeSerNullException("dataNascimento");
           }
           return true;
      }
@@ -22,7 +22,7 @@ public class DataNascimentoValidations  implements DataNascimentoValidationsImp 
           Integer idade = Period.between(data, LocalDate.now()).getYears() ;
           
           if(idade < 18){
-               throw new BeneficiarioDeveSerMaiorDeIdadeException("A idade miníma para cadastro é de 18 anos.");
+               throw new BeneficiarioDeveSerMaiorDeIdadeException();
           }
           return true;
      }
