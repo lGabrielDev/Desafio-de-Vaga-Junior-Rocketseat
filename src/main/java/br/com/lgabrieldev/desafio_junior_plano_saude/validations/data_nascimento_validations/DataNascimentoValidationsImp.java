@@ -1,5 +1,4 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.data_nascimento_validations;
-
 import java.time.LocalDate;
 
 public interface DataNascimentoValidationsImp {

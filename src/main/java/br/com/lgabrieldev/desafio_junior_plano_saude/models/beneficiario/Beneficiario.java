@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.Documento;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -43,6 +44,6 @@ public class Beneficiario {
      @Column(name = "data_ultima_atualizacao")
      private LocalDateTime dataUltimaAtualizacao;
 
-     @OneToMany(mappedBy = "beneficiario")
+     @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL)
      List<Documento> documentos;
 }

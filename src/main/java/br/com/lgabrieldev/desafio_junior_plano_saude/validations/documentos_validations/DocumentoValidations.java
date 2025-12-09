@@ -5,18 +5,27 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.BeneficiarioApenasPodeTer1DocumentoPorTipoException;
+import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.documentos_exceptions.DocumentoJaExisteNoBancoException;
+import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.documentos_exceptions.DocumentosIguaisException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.documentos_exceptions.TipoDocumentoNaoEncontradoException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoDeveTerApenasNumerosException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoNaoPodeSerNullException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoTemMuitosCharactersException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoCreateDto;
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.repository.DocumentoRepository;
 
 @Component
-public  class DocumentoValidations implements DocumentoValidationImp{
+public class DocumentoValidations implements DocumentoValidationImp{
 
      //attributes
      private final static Set<String> TIPOS_DOCUMENTOS_VALIDOS = Set.of("RG", "CPF", "CNH");
+     DocumentoRepository documentoRepository;
+
+     //constructors
+     public DocumentoValidations(DocumentoRepository documentoRepository){
+          this.documentoRepository = documentoRepository;
+     }
 
      // ****************************************************** validacoes do campo 'tipoDocumento' ****************************************************** 
      @Override
@@ -128,11 +137,43 @@ public  class DocumentoValidations implements DocumentoValidationImp{
      }
 
      @Override
+     public Boolean numeroDosDocumentosDevemSerDiferentes(List<DocumentoCreateDto> documentos) {
+
+          Long numeroDocumentosUnicos = documentos.stream()
+               .map((documento) -> documento.getNumeroDocumento())
+               .distinct()
+               .count();
+               
+               if(numeroDocumentosUnicos != documentos.size()){
+                    throw new DocumentosIguaisException("Os documentos informados possuem o mesmo número. Cada documento deve ser único.");
+               }
+          return true;
+     }
+
+     @Override
+     public Boolean numeroDocumentoNaoExisteNoBanco(List<DocumentoCreateDto> documentos) {
+          documentos.stream().anyMatch(documento -> {
+               String tipoDocumento = documento.getTipoDocumento();
+               String numeroDocumento = documento.getNumeroDocumento();
+
+               this.documentoRepository.findDocumentoByNumeroDocumento(numeroDocumento)
+                    .ifPresent(documentoEncontrado ->  { //precisa ter {} pra funcionar. No method 'ifPresent()' ele precisa usar 'bloco de código'
+                         throw new DocumentoJaExisteNoBancoException(String.format(" o numero do documento '%s' já existe no banco",  tipoDocumento));
+                    });
+
+               return false;
+          });
+          return true;
+     }
+     
+     @Override
      public Boolean numeroDocumentoTudoCerto(List<DocumentoCreateDto> documentos) {
      
           this.numeroDocumentoNaoPodeSerNull(documentos);
           this.numeroDocumentoQuantidadeCharacteresEstaCorreto(documentos);
           this.numeroDocumentoApenasNumeros(documentos);
+          this.numeroDosDocumentosDevemSerDiferentes(documentos);
+          this.numeroDocumentoNaoExisteNoBanco(documentos);
           return true;
      }
 
