@@ -1,16 +1,13 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.stereotype.Component;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Beneficiario;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
-import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.repository.BeneficiarioRepository;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.Documento;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoCreateDto;
-import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.repository.DocumentoRepository;
-import br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.documentos_validations.BeneficiarioQuantidadeDocumentosValidations;
+import br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper.DocumentoMapper;
 import br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.name_validations.NomeValidations;
 import br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.telefoneValidations.TelefoneValidations;
 import br.com.lgabrieldev.desafio_junior_plano_saude.validations.data_nascimento_validations.DataNascimentoValidations;
@@ -24,22 +21,19 @@ public class ValidationsDeAtualizacao {
      private TelefoneValidations telefoneValidations;
      private DataNascimentoValidations dataNascimentoValidations;
      private DocumentoValidations documentoValidations;
-     private DocumentoRepository documentoRepository;
 
       //constructors
      public ValidationsDeAtualizacao(
                NomeValidations nameValidations,
                TelefoneValidations telefoneValidations,
                DataNascimentoValidations dataNascimentoValidations,
-               DocumentoValidations documentoValidations,
-               DocumentoRepository documentoRepository
+               DocumentoValidations documentoValidations
           )
      {
           this.nameValidations = nameValidations;
           this.telefoneValidations = telefoneValidations;
           this.dataNascimentoValidations = dataNascimentoValidations;
           this.documentoValidations = documentoValidations;
-          this.documentoRepository = documentoRepository;
 
      }
 
@@ -66,8 +60,6 @@ public class ValidationsDeAtualizacao {
           return true;
      }
 
-
-     // -->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> CONTINUAR AQUI
      public Boolean camposDocumentosOk(Beneficiario beneficiario, BeneficiarioCreateDto dto){
           List<DocumentoCreateDto> documentosDtos = dto.getDocumentos();
 
@@ -76,42 +68,38 @@ public class ValidationsDeAtualizacao {
                this.documentoValidations.todosOsCamposEstaoCorretos(dto);
           }
 
-          //verificamos se o beneficiario ja possui esse documento. Se sim, removemos ele e adicionamos esse novo
-          List<Documento> tiposDocumentosAntigos = beneficiario.getDocumentos().stream()
-               .map(documento -> documento)
-               .collect(Collectors.toList());
+          //docs antigos
+          List<Documento> documentosAntigos = beneficiario.getDocumentos();
+          //docs antigos para excluir
+          List<Documento> documentosAntigosParaSeremExcluidos = new ArrayList<>();
 
-         List<Documento> tiposDocumentosNovos =  dto.getDocumentos().stream()
-               .map(dtoDocumento -> dtoDocumento)
-               .collect(Collectors.toList());
+          //novos docs dto
+          List<DocumentoCreateDto> documentosNovosDto = dto.getDocumentos();
+          //novos docs
+          List<Documento> documentosNovos = DocumentoMapper.converterTodosDtosParaDocumentos(dto.getDocumentos());
 
-               for(Documento i : tiposDocumentosAntigos){
 
-                    for(Documento j : tiposDocumentosNovos){
-                         if(j.getTipoDocumento().equals(i.getTipoDocumento())){
+          //loopamos os novos documentos
+          for(DocumentoCreateDto i : documentosNovosDto){
+               String tipoNovoDocumento = i.getTipoDocumento();
 
-                              //removemos o documento do banco
-                              this.documentoRepository.findDocumentoByBeneficiarioIdAndTipoDocumento(beneficiario.getId(),  j.getTipoDocumento());
-                              this.documentoRepository.deleteById(null);
+               //loopamos os documentos antigos
+               for(Documento docAntigo : documentosAntigos){
+                    String tipoAntigoDocumento = docAntigo.getTipoDocumento().getTipo();
 
-                              Documento documentoAtualizado = j;
 
-                              //removemos o documento do banco
-                              beneficiario.getDocumentos().add(documentoAtualizado); //sempre comecams pelo lado que iniciou a relação. 
-                              documentoAtualizado.setBeneficiario(beneficiario);
-                              
-                                   documentoAtualizado.setTipoDocumento(null);
-                         }
+                    if(tipoAntigoDocumento.equals(tipoNovoDocumento.toUpperCase())){
+                         documentosAntigosParaSeremExcluidos.add(docAntigo);
                     }
                }
-            
+          }
+          // adicionamos os novos documentos
+          beneficiario.getDocumentos().removeAll(documentosAntigosParaSeremExcluidos); // Não precisamos criar a  query SQL  'DELETE FROM Documento WHERE id = ?'  porque já setamos pra ser criado automaticamente,  usando o 'orphanRemoval = true' na entidade.
+          // bilateralidade
+          beneficiario.getDocumentos().addAll(documentosNovos); //sempre começa pela entidade que iniciou a relação
+          documentosNovos.stream().forEach(documentoNovo -> documentoNovo.setBeneficiario(beneficiario));
 
-
-
-
-               tiposDocumentosAntigos.forEach((tipo) -> System.out.println("TIPO DO DOCUMENTO --> " + tipo));
-               
-
+          
           return true;
      }
 
@@ -119,18 +107,6 @@ public class ValidationsDeAtualizacao {
      public Boolean todosOsCamposEstaoCorretos(Beneficiario beneficiario, BeneficiarioCreateDto dto) {
           this.camposBeneficiarioOk(beneficiario, dto);
           this.camposDocumentosOk(beneficiario, dto);
-
-
-
-          // List<DocumentoCreateDto> documentosDto = dto.getDocumentos();
-          //  if(documentosDto != null){
-          //      this.documentoValidations.todosOsCamposEstaoCorretos(documentosDto);
-          // }
-
-
           return true;
      }
-
-
-
 }

@@ -43,7 +43,12 @@ public class Beneficiario {
      @Column(name = "data_ultima_atualizacao")
      private LocalDateTime dataUltimaAtualizacao;
 
-     @OneToMany(mappedBy = "beneficiario", cascade = CascadeType.ALL)
+     @OneToMany(
+          mappedBy = "beneficiario", 
+          cascade = CascadeType.ALL,
+          orphanRemoval = true     // ao remover da lista, o documento também é removido do banco de dados automaticamente. Ex:
+                                                  // Ao utilizar beneficiario.getDocumentos().removeAll() or beneficiario.getDocumentos().remove(documentoTal) --> É feita uma query SQL automaticamente DELETE FROM Documento WHERE id = ?
+     )
      List<Documento> documentos;
 
      //constructors

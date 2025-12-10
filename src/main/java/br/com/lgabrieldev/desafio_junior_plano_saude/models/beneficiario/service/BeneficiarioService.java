@@ -75,8 +75,6 @@ public class BeneficiarioService {
 
           this.validationsDeAtualizacao.todosOsCamposEstaoCorretos(beneficiario, dto);
           
-
-          
           //salvar no banco
           this.beneficiarioRepository.save(beneficiario); //nao precisa salvar o lado do 'Documento' porque o Cascade All está ativado. 
           BeneficiarioFullDto beneficiarioFullDto = BeneficiarioMapper.converterBeneficiarioParaFullDTO(beneficiario);
