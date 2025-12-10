@@ -31,8 +31,6 @@ public class BeneficiarioService {
           this.validationsDeAtualizacao = validationsDeAtualizacao;
      }
 
-
-
      // ******************************************** CRIAR Beneficiário ********************************************
      public BeneficiarioFullDto cadastrarBeneficiario(BeneficiarioCreateDto beneficiarioCreateDto){
 
@@ -48,7 +46,6 @@ public class BeneficiarioService {
  
      }
 
-
      // *************************************************** LISTAR todos  ***************************************************
      public  List<BeneficiarioWithoutDocumentos> listarTodos(){
           return this.beneficiarioRepository.findAll().stream()
@@ -56,25 +53,20 @@ public class BeneficiarioService {
                .collect(Collectors.toList());
      }
 
-
      // *************************************************** LISTAR todos os documentos de um beneficiario  ***************************************************
      public  List<DocumentoFullDto> listarTodosDocumentos(Long beneficiarioId){
           this.allValidations.beneficiarioExiste(beneficiarioId);
-
            return this.documentoRepository.findDocumentoByBeneficiarioId(beneficiarioId).stream()
                .map(documento -> DocumentoMapper.converterDocumentoParaFullDTO(documento))
                .collect(Collectors.toList());
      }
-
 
      // ******************************************** ALTERAR dados de um Beneficiário ********************************************
      public BeneficiarioFullDto atualizarBeneficiario(Long beneficiarioId, BeneficiarioCreateDto dto){
 
           this.allValidations.beneficiarioExiste(beneficiarioId);
           Beneficiario beneficiario =  this.beneficiarioRepository.findById(beneficiarioId).get();
-
           this.validationsDeAtualizacao.todosOsCamposEstaoCorretos(beneficiario, dto);
-          
           //salvar no banco
           this.beneficiarioRepository.save(beneficiario); //nao precisa salvar o lado do 'Documento' porque o Cascade All está ativado. 
           BeneficiarioFullDto beneficiarioFullDto = BeneficiarioMapper.converterBeneficiarioParaFullDTO(beneficiario);

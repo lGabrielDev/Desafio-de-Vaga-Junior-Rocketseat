@@ -1,7 +1,8 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Beneficiario;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
@@ -37,7 +38,6 @@ public class ValidationsDeAtualizacao {
 
      }
 
-
      public Boolean camposBeneficiarioOk(Beneficiario beneficiario, BeneficiarioCreateDto dto){
           String nome = dto.getNome();
           if(nome != null){
@@ -50,13 +50,12 @@ public class ValidationsDeAtualizacao {
                this.telefoneValidations.telefoneTudoCerto(telefone);
                beneficiario.setTelefone(telefone);
           }
- 
+
           LocalDate dataNascimento = dto.getDataNascimento();
           if(dataNascimento != null){
                this.dataNascimentoValidations.dataNascimentoTudoCerto(dataNascimento);
                beneficiario.setDataNascimento(dataNascimento);
           }
-
           return true;
      }
 
@@ -67,39 +66,25 @@ public class ValidationsDeAtualizacao {
           if(documentosDtos != null){
                this.documentoValidations.todosOsCamposEstaoCorretos(dto);
           }
-
           //docs antigos
           List<Documento> documentosAntigos = beneficiario.getDocumentos();
-          //docs antigos para excluir
-          List<Documento> documentosAntigosParaSeremExcluidos = new ArrayList<>();
-
-          //novos docs dto
-          List<DocumentoCreateDto> documentosNovosDto = dto.getDocumentos();
           //novos docs
           List<Documento> documentosNovos = DocumentoMapper.converterTodosDtosParaDocumentos(dto.getDocumentos());
 
+          //verificamos o tipo dos novos documentos enviados. Esses sao os tipos que precisamos substituir
+          Set<String> tiposParaSubstituir = documentosNovos.stream()
+               .map((documentos) -> documentos.getTipoDocumento().getTipo())
+               .collect(Collectors.toSet());
 
-          //loopamos os novos documentos
-          for(DocumentoCreateDto i : documentosNovosDto){
-               String tipoNovoDocumento = i.getTipoDocumento();
-
-               //loopamos os documentos antigos
-               for(Documento docAntigo : documentosAntigos){
-                    String tipoAntigoDocumento = docAntigo.getTipoDocumento().getTipo();
-
-
-                    if(tipoAntigoDocumento.equals(tipoNovoDocumento.toUpperCase())){
-                         documentosAntigosParaSeremExcluidos.add(docAntigo);
-                    }
-               }
-          }
+          //filtramos os documentos antigos que tenham esses tipos
+          List<Documento> documentosAntigosParaSeremExcluidos = documentosAntigos.stream()
+               .filter((documentoAntigo) -> tiposParaSubstituir.contains(documentoAntigo.getTipoDocumento().getTipo()))
+               .collect(Collectors.toList());
           // adicionamos os novos documentos
           beneficiario.getDocumentos().removeAll(documentosAntigosParaSeremExcluidos); // Não precisamos criar a  query SQL  'DELETE FROM Documento WHERE id = ?'  porque já setamos pra ser criado automaticamente,  usando o 'orphanRemoval = true' na entidade.
           // bilateralidade
           beneficiario.getDocumentos().addAll(documentosNovos); //sempre começa pela entidade que iniciou a relação
           documentosNovos.stream().forEach(documentoNovo -> documentoNovo.setBeneficiario(beneficiario));
-
-          
           return true;
      }
 
