@@ -17,7 +17,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
-
 @Entity
 @Getter
 @Setter
@@ -45,11 +44,9 @@ public class Documento {
      @JoinColumn(name = "beneficiario_id")
      private Beneficiario beneficiario;
 
-
      //constructors
      public Documento(){
           this.dataInclusao = LocalDateTime.now();
           this.dataUltimaAtualizacao = LocalDateTime.now();
      }
 }
-

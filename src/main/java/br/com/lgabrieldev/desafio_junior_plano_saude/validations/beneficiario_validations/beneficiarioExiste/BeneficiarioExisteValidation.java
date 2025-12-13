@@ -1,4 +1,5 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.beneficiarioExiste;
+
 import org.springframework.stereotype.Component;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.BeneficiarioNaoExisteException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.repository.BeneficiarioRepository;

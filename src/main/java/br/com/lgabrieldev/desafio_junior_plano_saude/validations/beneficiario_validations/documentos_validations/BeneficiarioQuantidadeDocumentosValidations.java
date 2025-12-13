@@ -7,7 +7,6 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.Be
 @Component
 public class BeneficiarioQuantidadeDocumentosValidations  implements BeneficiarioQuantidadeDocumentosValidationsImp {
 
-     
        @Override
      public Boolean peloMenosUmDocumento(BeneficiarioCreateDto beneficiarioCreateDto) {
          try{
@@ -18,7 +17,6 @@ public class BeneficiarioQuantidadeDocumentosValidations  implements Beneficiari
           }
           return true;
      }
-
 
      public Boolean quantidadeDocumentosTudoCerto(BeneficiarioCreateDto beneficiarioCreateDto){
           this.peloMenosUmDocumento(beneficiarioCreateDto);

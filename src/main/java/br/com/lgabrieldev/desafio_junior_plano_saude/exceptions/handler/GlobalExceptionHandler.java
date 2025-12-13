@@ -20,7 +20,6 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptio
 @ControllerAdvice
 public class GlobalExceptionHandler {
      
-
      // // *********************************** beneficiario exceptions ***********************************
      @ExceptionHandler({
           BeneficiarioApenasPodeTer1DocumentoPorTipoException.class,
@@ -42,7 +41,6 @@ public class GlobalExceptionHandler {
                .body(e1);
      }
 
-
      @ExceptionHandler(HttpMessageNotReadableException.class)
      public ResponseEntity<ErroPadrao> httpMessageNotReadableExceptionHandler (HttpMessageNotReadableException e){
           ErroPadrao e1 = new ErroPadrao(new FormatacaoDeDataIncorretaException());
@@ -51,9 +49,7 @@ public class GlobalExceptionHandler {
                .status(HttpStatus.BAD_REQUEST)
                .body(e1);
      }
-
-
-
+     
      // // *********************************** beneficiario exceptions ***********************************
      // @ExceptionHandler(BeneficiarioApenasPodeTer1DocumentoPorTipoException.class)
      // public ResponseEntity<ErroPadrao> generalExceptionHandler (BeneficiarioApenasPodeTer1DocumentoPorTipoException e){

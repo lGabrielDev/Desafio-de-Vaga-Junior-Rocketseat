@@ -59,6 +59,5 @@ public abstract class DocumentoMapper {
                     return TipoDocumento.CNH;
                default: return null;
           }
-
      }
 }

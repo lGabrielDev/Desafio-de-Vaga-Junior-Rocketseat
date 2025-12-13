@@ -12,8 +12,7 @@ public enum TipoDocumento {
      //attributes
      private String tipo;
      private Integer maxCaracteres;
-
-
+     
      //constructors
      private TipoDocumento(String tipo, Integer maxCharaceres){
           this.tipo = tipo;

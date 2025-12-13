@@ -1,4 +1,5 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.documentos_validations;
+
 import java.util.List;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoCreateDto;
@@ -19,7 +20,5 @@ public interface DocumentoValidationImp {
      public Boolean numeroDocumentoNaoExisteNoBanco(List<DocumentoCreateDto> documentos);
      public Boolean numeroDocumentoTudoCerto(List<DocumentoCreateDto> documentos);
      
-
      public Boolean todosOsCamposEstaoCorretos(BeneficiarioCreateDto beneficiarioCreateDto);
-     
 }

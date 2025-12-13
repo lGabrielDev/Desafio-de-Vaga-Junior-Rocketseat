@@ -1,13 +1,11 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.telefoneValidations;
 
 import org.springframework.stereotype.Component;
-
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoDeveTerApenasNumerosException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoNaoPodeSerNullException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoTemMuitosCharactersException;
 
 @Component
-
 public class TelefoneValidations implements TelefoneValidationsImp  {
 
      @Override
@@ -43,9 +41,4 @@ public class TelefoneValidations implements TelefoneValidationsImp  {
 
           return true;
      }
-
-    
-
-
-     
 }

@@ -34,5 +34,3 @@ public class BeneficiarioWithoutDocumentos {
      private LocalDateTime dataUltimaAtualizacao;
      private Integer quantidadeDocumentos;
 }
-
-

@@ -1,8 +1,6 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.controller;
 
-
 import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,7 +17,6 @@ import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.Be
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.service.BeneficiarioService;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs.DocumentoFullDto;
 
-
 @RestController
 @RequestMapping("/beneficiarios")
 public class BeneficiarioController {
@@ -28,7 +25,6 @@ public class BeneficiarioController {
      private BeneficiarioService beneficiarioService;
 
      //constructors
-     
      public BeneficiarioController(BeneficiarioService beneficiarioService){
           this.beneficiarioService = beneficiarioService;
      }
@@ -38,11 +34,9 @@ public class BeneficiarioController {
      public  ResponseEntity<BeneficiarioFullDto> cadastrarBeneficiario(@RequestBody BeneficiarioCreateDto beneficiarioCreateDto){
 
          BeneficiarioFullDto beneficiarioFullDto = this.beneficiarioService.cadastrarBeneficiario(beneficiarioCreateDto);
-
           return ResponseEntity
                .status(HttpStatus.CREATED)
                .body(beneficiarioFullDto);
- 
      }
 
      // *************************************************** Listar todos  ***************************************************
@@ -59,7 +53,6 @@ public class BeneficiarioController {
           return ResponseEntity
                .status(HttpStatus.OK)
                .body(this.beneficiarioService.listarTodosDocumentos(beneficiarioId));
- 
      }
 
      // ******************************************** Alterar Beneficiário ********************************************
@@ -67,7 +60,6 @@ public class BeneficiarioController {
      public ResponseEntity<BeneficiarioFullDto> atualizarBeneficiario(@PathVariable(value = "id") Long beneficiarioId, @RequestBody BeneficiarioCreateDto dto){
 
          BeneficiarioFullDto beneficiarioFullDto = this.beneficiarioService.atualizarBeneficiario(beneficiarioId, dto);
-
           return ResponseEntity
                .status(HttpStatus.OK)
                .body(beneficiarioFullDto);

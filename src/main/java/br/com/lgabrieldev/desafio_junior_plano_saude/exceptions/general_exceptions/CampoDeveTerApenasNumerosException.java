@@ -7,4 +7,3 @@ public class CampoDeveTerApenasNumerosException extends RuntimeException{
           super(String.format(" '%s' deve possuir apenas números.", errorField));
      }
 }
-

@@ -38,5 +38,4 @@ public class AllValidations {
           this.beneficiarioExisteValidation.BeneficiarioExiste(beneficiarioId);
           return true;
      }
-     
 }

@@ -1,10 +1,8 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.models.documento.DTOs;
 
 import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +27,4 @@ public class DocumentoFullDto {
      private LocalDateTime dataInclusao;
      @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
      private LocalDateTime dataUltimaAtualizacao;
-
-
 }

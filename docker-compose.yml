@@ -1,31 +1,37 @@
 version: '3.8' 
 
-# volumes: 
-#     # Volume nomeado para persistência dos dados do DB
-#     volume_plano_saude: 
-
+volumes: 
+     volume_plano_saude: 
+     
 networks: 
-    # A rede pode ser mantida, embora não seja estritamente necessária se for o único container
     plano_saude_network: 
 
 services: 
     container_postgres: 
         container_name: container_postgres
         image: postgres:13.16
-        
-        # Mapeamento de porta: A porta 2223 do seu PC se conecta à porta 5432 do container
         ports:
             - 2223:5432
-            
         environment:
-            # Credenciais para inicialização do DB e criação do usuário
-            POSTGRES_USER: ${TAL}
-            POSTGRES_PASSWORD: ${TAL2}
-            POSTGRES_DB: ${TAL3}
-            
-        # Monta o volume para garantir que os dados persistam
-     #    volumes:
-     #        - volume_plano_saude:/var/lib/postgresql/data
-            
+            POSTGRES_USER: ${POSTGRES_USER}
+            POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+            POSTGRES_DB: ${POSTGRES_DB}
+        volumes:
+             - volume_plano_saude:/var/lib/postgresql/data
         networks:
             - plano_saude_network
+
+    container_backend: 
+        build: . 
+        container_name: container_backend
+        environment:
+            server.port: ${SERVER_PORT} # porta que a aplicacao vai estar funcionando no container
+            spring.datasource.url: jdbc:postgresql://container_postgres:5432/${POSTGRES_DB}
+            spring.datasource.username: ${POSTGRES_USER}
+            spring.datasource.password: ${POSTGRES_PASSWORD}
+        ports:
+            - 8080:${SERVER_PORT} # porta do pc local --> porta do container
+        networks:
+            - plano_saude_network
+        depends_on:
+            - container_postgres

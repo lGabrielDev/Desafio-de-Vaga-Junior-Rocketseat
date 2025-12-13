@@ -1,4 +1,5 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.beneficiario_validations.name_validations;
+
 import org.springframework.stereotype.Component;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoNaoPodeSerNullException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.general_exceptions.CampoTemMuitosCharactersException;

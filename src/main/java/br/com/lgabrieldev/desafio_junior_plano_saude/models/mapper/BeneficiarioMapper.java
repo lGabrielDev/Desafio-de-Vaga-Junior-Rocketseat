@@ -1,4 +1,5 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.models.mapper;
+
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Beneficiario;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioFullDto;
@@ -44,14 +45,4 @@ public abstract class BeneficiarioMapper {
                beneficiarioWithoutDocumentos.setQuantidadeDocumentos(beneficiario.getDocumentos().size());
           return beneficiarioWithoutDocumentos;
      }
-
-     //ATUALIZAR dados beneficiario
-     // public  static BeneficiarioWithoutDocumentos atualizarDados(Beneficiario beneficiario, BeneficiarioCreateDto dto){
-     //      if(dto.getNome() == null){
-
-     //      }
-
-     //      return null;
-     // }
-
 }

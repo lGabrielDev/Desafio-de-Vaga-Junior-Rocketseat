@@ -7,4 +7,3 @@ public class CampoTemMuitosCharactersException extends RuntimeException{
           super(errorMessage);
      }
 }
-

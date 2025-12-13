@@ -7,4 +7,3 @@ public class NaoFoiEnviadoNenhumDocumentoParaCadastroException extends RuntimeEx
           super("Para cadastrar um beneficiário é necessário informar pelo menos 1 documento --> 'CPF', 'RG' ou 'CNH'");
      }
 }
- 

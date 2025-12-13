@@ -7,5 +7,4 @@ public interface TelefoneValidationsImp {
      public Boolean telefoneApenasNumeros(String telefone);
      
      public Boolean telefoneTudoCerto(String nome);
-     
 }

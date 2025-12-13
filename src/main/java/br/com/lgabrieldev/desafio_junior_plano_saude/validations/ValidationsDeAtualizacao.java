@@ -1,4 +1,5 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;

@@ -1,4 +1,5 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations.documentos_validations;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -31,11 +32,11 @@ public class DocumentoValidations implements DocumentoValidationImp{
      @Override
      public  Boolean tipoDocumentoNaoPodeSerNull(List<DocumentoCreateDto> documentos) {
 
-               Boolean tipoDocumentoErrado =  documentos.stream().anyMatch( i -> i.getTipoDocumento() == null || i.getTipoDocumento().isBlank());
-               if(tipoDocumentoErrado){
-                    throw new CampoNaoPodeSerNullException("'tipoDocumento'");
-               }
-               return true;
+          Boolean tipoDocumentoErrado =  documentos.stream().anyMatch( i -> i.getTipoDocumento() == null || i.getTipoDocumento().isBlank());
+          if(tipoDocumentoErrado){
+               throw new CampoNaoPodeSerNullException("'tipoDocumento'");
+          }
+          return true;
      }
 
      @Override
@@ -160,7 +161,6 @@ public class DocumentoValidations implements DocumentoValidationImp{
                     .ifPresent(documentoEncontrado ->  { //precisa ter {} pra funcionar. No method 'ifPresent()' ele precisa usar 'bloco de código'
                          throw new DocumentoJaExisteNoBancoException(tipoDocumento);
                     });
-
                return false;
           });
           return true;
@@ -186,5 +186,4 @@ public class DocumentoValidations implements DocumentoValidationImp{
           this.numeroDocumentoTudoCerto(documentos);
           return true;
      }
-
 }
