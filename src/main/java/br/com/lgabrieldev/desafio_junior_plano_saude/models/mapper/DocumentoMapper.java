@@ -16,6 +16,7 @@ public abstract class DocumentoMapper {
           String tipoDocumentoAsString = documentDto.getTipoDocumento();
           documento.setTipoDocumento(converterTipoDocumentoStringParaEnum(tipoDocumentoAsString)); 
           documento.setNumeroDocumento(documentDto.getNumeroDocumento());
+          //data de inclusao e data de mofificacao setamos direto no constructor
           return documento;
      }
 

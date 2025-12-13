@@ -54,5 +54,7 @@ public class Beneficiario {
      //constructors
      public Beneficiario(){
           this.documentos = new ArrayList<>(); //sempre inicializar sua lista, senao dá BO
+          this.dataInclusao = LocalDateTime.now();
+          this.dataUltimaAtualizacao = LocalDateTime.now();
      }
 }

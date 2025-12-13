@@ -28,7 +28,9 @@ public class BeneficiarioWithoutDocumentos {
      private String telefone;
      @JsonFormat(pattern = "dd-MM-yyyy")
      private LocalDate dataNascimento;
+     @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
      private LocalDateTime dataInclusao;
+     @JsonFormat(pattern = "dd-MM-yyyy hh:mm:ss")
      private LocalDateTime dataUltimaAtualizacao;
      private Integer quantidadeDocumentos;
 }

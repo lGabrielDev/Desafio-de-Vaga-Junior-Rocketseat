@@ -1,5 +1,6 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.validations;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -91,7 +92,13 @@ public class ValidationsDeAtualizacao {
 // -------------------------- tudo validado --------------------------
      public Boolean todosOsCamposEstaoCorretos(Beneficiario beneficiario, BeneficiarioCreateDto dto) {
           this.camposBeneficiarioOk(beneficiario, dto);
-          this.camposDocumentosOk(beneficiario, dto);
+
+          if(dto.getDocumentos() != null){
+               this.camposDocumentosOk(beneficiario, dto);
+          }
+          
+          beneficiario.setDataUltimaAtualizacao(LocalDateTime.now());
+
           return true;
      }
 }

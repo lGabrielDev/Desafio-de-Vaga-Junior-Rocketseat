@@ -2,6 +2,8 @@ package br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.servic
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
+
+import br.com.lgabrieldev.desafio_junior_plano_saude.exceptions.beneficiario_exceptions.BeneficiarioNaoExisteException;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Beneficiario;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioCreateDto;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.DTOs.BeneficiarioFullDto;
@@ -71,6 +73,12 @@ public class BeneficiarioService {
           this.beneficiarioRepository.save(beneficiario); //nao precisa salvar o lado do 'Documento' porque o Cascade All está ativado. 
           BeneficiarioFullDto beneficiarioFullDto = BeneficiarioMapper.converterBeneficiarioParaFullDTO(beneficiario);
           return beneficiarioFullDto;
+     }
 
+     // ******************************************** DELETAR dados de um Beneficiário ********************************************
+     public String deletarBeneficiario(Long beneficiarioId){
+          this.beneficiarioRepository.findById(beneficiarioId).orElseThrow(() -> new BeneficiarioNaoExisteException(beneficiarioId));
+          this.beneficiarioRepository.deleteById(beneficiarioId);
+          return String.format("Beneficiario #%d deletado com sucesso", beneficiarioId);
      }
 }

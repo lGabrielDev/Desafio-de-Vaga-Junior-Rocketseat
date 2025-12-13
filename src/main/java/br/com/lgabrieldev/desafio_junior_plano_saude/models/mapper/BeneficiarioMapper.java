@@ -11,6 +11,7 @@ public abstract class BeneficiarioMapper {
                beneficiario.setNome(beneficiarioDto.getNome());
                beneficiario.setTelefone(beneficiarioDto.getTelefone());
                beneficiario.setDataNascimento(beneficiarioDto.getDataNascimento());
+               //data de inclusao e data de modificacao, alteremos direto no constructor
           //bilateralidade
           DocumentoMapper.converterTodosDtosParaDocumentos(beneficiarioDto.getDocumentos()).stream()
                .forEach((documento) -> {
@@ -26,6 +27,8 @@ public abstract class BeneficiarioMapper {
                beneficiarioFullDto.setNome(beneficiario.getNome());
                beneficiarioFullDto.setTelefone(beneficiario.getTelefone());
                beneficiarioFullDto.setDataNascimento(beneficiario.getDataNascimento());
+               beneficiarioFullDto.setDataInclusao(beneficiario.getDataInclusao());
+               beneficiarioFullDto.setDataUltimaAtualizacao(beneficiario.getDataUltimaAtualizacao());
                beneficiarioFullDto.setDocumentos(DocumentoMapper.converterTodosDocumentosParaFullDTO(beneficiario.getDocumentos()));
           return beneficiarioFullDto;
      }
@@ -36,6 +39,8 @@ public abstract class BeneficiarioMapper {
                beneficiarioWithoutDocumentos.setNome(beneficiario.getNome());
                beneficiarioWithoutDocumentos.setTelefone(beneficiario.getTelefone());
                beneficiarioWithoutDocumentos.setDataNascimento(beneficiario.getDataNascimento());
+               beneficiarioWithoutDocumentos.setDataInclusao(beneficiario.getDataInclusao());
+               beneficiarioWithoutDocumentos.setDataUltimaAtualizacao(beneficiario.getDataUltimaAtualizacao());
                beneficiarioWithoutDocumentos.setQuantidadeDocumentos(beneficiario.getDocumentos().size());
           return beneficiarioWithoutDocumentos;
      }

@@ -1,7 +1,6 @@
 package br.com.lgabrieldev.desafio_junior_plano_saude.models.documento;
 
 import java.time.LocalDateTime;
-
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.beneficiario.Beneficiario;
 import br.com.lgabrieldev.desafio_junior_plano_saude.models.enums.TipoDocumento;
 import jakarta.persistence.Column;
@@ -45,5 +44,12 @@ public class Documento {
      @ManyToOne(targetEntity = Beneficiario.class)
      @JoinColumn(name = "beneficiario_id")
      private Beneficiario beneficiario;
+
+
+     //constructors
+     public Documento(){
+          this.dataInclusao = LocalDateTime.now();
+          this.dataUltimaAtualizacao = LocalDateTime.now();
+     }
 }
 
