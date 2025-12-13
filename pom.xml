@@ -68,6 +68,7 @@
 	</dependencies>
 
 	<build>
+          <finalName>desafio_junior_plano_saude</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
