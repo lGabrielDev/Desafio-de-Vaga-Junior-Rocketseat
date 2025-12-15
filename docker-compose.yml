@@ -25,12 +25,11 @@ services:
         build: . 
         container_name: container_backend
         environment:
-            server.port: ${SERVER_PORT} # porta que a aplicacao vai estar funcionando no container
             spring.datasource.url: jdbc:postgresql://container_postgres:5432/${POSTGRES_DB}
             spring.datasource.username: ${POSTGRES_USER}
             spring.datasource.password: ${POSTGRES_PASSWORD}
         ports:
-            - 8080:${SERVER_PORT} # porta do pc local --> porta do container
+            - 8080:8080 # porta do pc local --> porta do container
         networks:
             - plano_saude_network
         depends_on:

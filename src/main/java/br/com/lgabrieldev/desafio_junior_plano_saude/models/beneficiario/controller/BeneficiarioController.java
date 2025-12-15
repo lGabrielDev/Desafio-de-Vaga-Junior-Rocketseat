@@ -32,7 +32,6 @@ public class BeneficiarioController {
      // ******************************************** Criar Beneficiário ********************************************
      @PostMapping("")
      public  ResponseEntity<BeneficiarioFullDto> cadastrarBeneficiario(@RequestBody BeneficiarioCreateDto beneficiarioCreateDto){
-
          BeneficiarioFullDto beneficiarioFullDto = this.beneficiarioService.cadastrarBeneficiario(beneficiarioCreateDto);
           return ResponseEntity
                .status(HttpStatus.CREATED)
@@ -58,7 +57,6 @@ public class BeneficiarioController {
      // ******************************************** Alterar Beneficiário ********************************************
      @PutMapping("{id}")
      public ResponseEntity<BeneficiarioFullDto> atualizarBeneficiario(@PathVariable(value = "id") Long beneficiarioId, @RequestBody BeneficiarioCreateDto dto){
-
          BeneficiarioFullDto beneficiarioFullDto = this.beneficiarioService.atualizarBeneficiario(beneficiarioId, dto);
           return ResponseEntity
                .status(HttpStatus.OK)

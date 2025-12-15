@@ -1,4 +1,4 @@
-FROM openjdk:21-ea-1-jdk-oracle
+FROM openjdk:17-ea-10-jdk
 
 WORKDIR /app
 
