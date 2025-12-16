@@ -21,6 +21,8 @@ Considerando o seguinte diagrama de classes:
 Crie uma aplicação utilizando Java e Spring Boot que forneça uma API REST para manter o cadastro
 de beneficiários de um plano de saúde.
 
+
+
 ---
 
 <br>
@@ -92,4 +94,18 @@ Fornecer uma API REST com as seguintes funcionalidades:
 
      <br>
 
-     3.  Acesse: `http://localhost:8080/swagger-ui/index.html`
+3.  Acesse: `http://localhost:8080/swagger-ui/index.html`
+
+---
+
+<br>
+
+## ✨ Créditos
+Este projeto foi desenvolvido como parte de um desafio proposto pela Rocketseat, com base no material do professor [Matheus Ferreira](https://github.com/matheuslf).
+
+- Repositório do desafio:  [<img src="./imgs/github_icon.png" width="30px" align="center">](https://github.com/matheuslf/com-rocketseat-desafio-junior)
+
+- Vídeo do desafio:  [<img src="./imgs/youtube_icon.png" width="30px" align="center">](https://www.youtube.com/watch?v=CRf783vNto0&t=302s)
+
+
+[]()
